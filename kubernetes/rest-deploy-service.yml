@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: rest-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: rest-service
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-service
+spec:
+  selector:
+      matchLabels:
+        app: rest-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: rest-service
+    spec:
+      containers:
+        - name: rest-service
+          image: tonycav/k8:springboot-k8s-ingress-rest
+          ports:
+          - containerPort: 8080
+          
+                  
